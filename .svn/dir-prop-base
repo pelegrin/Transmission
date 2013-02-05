@@ -1,0 +1,14 @@
+K 13
+svn:externals
+V 69
+third-party/libevent svn://svn.transmissionbt.com/levent/patches-2.0
+
+K 10
+svn:ignore
+V 27
+.depend
+build
+release
+beta
+
+END
