@@ -68,9 +68,9 @@ typedef enum {
     //pelegrin addition
 @property (copy) NSString *downloadFolder;
 @property (copy) NSString *incompleteFolder;
-@property(atomic, getter = isMoving) BOOL moving;
-@property (atomic, getter = isMovingError) BOOL movingError;
-@property (assign, atomic) id userInfo;
+@property(nonatomic, getter = isMoving) BOOL moving;
+@property (nonatomic, getter = isMovingError) BOOL movingError;
+@property (strong) id userInfo;
     //pelegrin addition end
 
 

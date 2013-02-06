@@ -71,10 +71,12 @@ void startQueueCallback(tr_torrent * torrent, void * torrentData)
 
 void completenessChangeCallback(tr_torrent * torrent, tr_completeness status, bool wasRunning, void * torrentData)
 {
-    NSDictionary * dict = [[NSDictionary alloc] initWithObjectsAndKeys: [NSNumber numberWithInt: status], @"Status",
-                           [NSNumber numberWithBool: wasRunning], @"WasRunning", nil];
-    [(Torrent *)torrentData performSelectorOnMainThread: @selector(completenessChange:) withObject: dict waitUntilDone: NO];
-    [dict autorelease];
+    @autoreleasepool {
+        NSDictionary * dict = [[NSDictionary alloc] initWithObjectsAndKeys: [NSNumber numberWithInt: status], @"Status",
+                               [NSNumber numberWithBool: wasRunning], @"WasRunning", nil];
+        [(Torrent *)torrentData performSelectorOnMainThread: @selector(completenessChange:) withObject: dict waitUntilDone: NO];
+        [dict autorelease];
+    }
 }
 
 void ratioLimitHitCallback(tr_torrent * torrent, void * torrentData)
@@ -1053,6 +1055,9 @@ int trashDataFile(const char * filename)
         if (errorString && ![errorString isEqualToString: @""])
             string = [string stringByAppendingFormat: @": %@", errorString];
     }
+    else if ([self isMovingError]) {
+        string = NSLocalizedString(@"Error moving torrent", @"Move error -> status string");
+    }
     else
     {
         switch (fStat->activity)
@@ -1660,8 +1665,8 @@ int trashDataFile(const char * filename)
     
     }
             //pelegrin addition
-    _downloadFolder = [NSString stringWithUTF8String:tr_torrentGetDownloadDir(fHandle)];
-    _incompleteFolder = [NSString stringWithUTF8String:tr_torrentGetCurrentDir(fHandle)];
+    self.downloadFolder = [NSString stringWithUTF8String:tr_torrentGetDownloadDir(fHandle)];
+    self.incompleteFolder = [NSString stringWithUTF8String:tr_torrentGetCurrentDir(fHandle)];
             //pelegrin addition end
     
     fInfo = tr_torrentInfo(fHandle);

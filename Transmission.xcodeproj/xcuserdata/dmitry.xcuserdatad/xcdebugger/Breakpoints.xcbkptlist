@@ -8,25 +8,38 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "macosx/Controller.m"
-         timestampString = "378083060.450785"
+         timestampString = "381876702.345709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2026"
-         endingLineNumber = "2026"
+         startingLineNumber = "2023"
+         endingLineNumber = "2023"
          landmarkName = "-moveTorrent:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "macosx/Controller.m"
-         timestampString = "381779891.241188"
+         timestampString = "381876702.345709"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "3093"
-         endingLineNumber = "3093"
+         startingLineNumber = "3090"
+         endingLineNumber = "3090"
          landmarkName = "-checkAutoImportDirectory"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "macosx/TorrentCell.m"
+         timestampString = "381869257.432434"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "597"
+         endingLineNumber = "597"
+         landmarkName = "-drawRegularBar:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
@@ -37,6 +50,13 @@
          continueAfterRunningActions = "No"
          scope = "0"
          stopOnStyle = "0">
+         <Actions>
+            <BreakpointActionProxy
+               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
+               <ActionContent>
+               </ActionContent>
+            </BreakpointActionProxy>
+         </Actions>
       </ExceptionBreakpoint>
    </ExceptionBreakpoints>
 </Bucket>

@@ -1993,11 +1993,8 @@ static void sleepCallback(void * controller, io_service_t y, natural_t messageTy
     @autoreleasepool {
         Torrent *torrent = [(NSDictionary *)threadInfo objectForKey:@"torrent"];
         NSDictionary *userInfo = [(NSDictionary *)threadInfo objectForKey:@"userInfo"];
-        NSMutableString *name = [NSMutableString stringWithString:@"'"];
-        [name appendString:[torrent name]];
-        [name appendString:@"'"];
-        NSString *from = [torrent.incompleteFolder stringByAppendingPathComponent:name];
-        NSString *to = [torrent.downloadFolder stringByAppendingPathComponent:name];
+        NSString *from = [torrent.incompleteFolder stringByAppendingPathComponent:torrent.name];
+        NSString *to = [torrent.downloadFolder stringByAppendingPathComponent:torrent.name];
         torrent.moving = true;
         NSLog(@"thread: moving %@ to %@", from, to);
         NSError *err = nil;

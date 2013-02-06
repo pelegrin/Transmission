@@ -322,6 +322,7 @@
     fMouseDownActionButton = pushed;
 }
 
+#pragma mark draw cell method
 - (void) drawInteriorWithFrame: (NSRect) cellFrame inView: (NSView *) controlView
 {
     Torrent * torrent = [self representedObject];
@@ -330,8 +331,9 @@
     const BOOL minimal = [fDefaults boolForKey: @"SmallView"];
     
     //bar
+
     [self drawBar: minimal ? [self barRectMinForBounds: cellFrame] : [self barRectRegForBounds: cellFrame]];
-    
+
     //group coloring
     const NSRect iconRect = [self iconRectForBounds: cellFrame];
     
@@ -364,6 +366,7 @@
     }
     
     const BOOL error = [torrent isAnyErrorOrWarning];
+    const BOOL movingError = [torrent isMovingError];
     
     //icon
     if (!minimal || !(!fTracking && fHoverAction)) //don't show in minimal mode when hovered over
@@ -374,7 +377,7 @@
     }
     
     //error badge
-    if (error && !minimal)
+    if ((error && !minimal) || movingError)
     {
         NSImage * errorImage = [NSImage imageNamed: NSImageNameCaution];
         const NSRect errorRect = NSMakeRect(NSMaxX(iconRect) - ERROR_IMAGE_SIZE, NSMaxY(iconRect) - ERROR_IMAGE_SIZE, ERROR_IMAGE_SIZE, ERROR_IMAGE_SIZE);
@@ -549,6 +552,7 @@
 
 @implementation TorrentCell (Private)
 
+#pragma mark draw progress bar
 - (void) drawBar: (NSRect) barRect
 {
     const BOOL minimal = [fDefaults boolForKey: @"SmallView"];
@@ -588,6 +592,11 @@
         {
             if ([torrent isChecking])
                 [[ProgressGradients progressYellowGradient] drawInRect: haveRect angle: 90];
+            //pelegrin addition
+            else if ([torrent isMoving]) {
+                [[ProgressGradients progressDarkBlueGradient] drawInRect:haveRect angle:90];
+            }
+            //pelegrin addition end
             else if ([torrent isSeeding])
             {
                 NSRect ratioHaveRect, ratioRemainingRect;
@@ -845,9 +854,11 @@
     else if (fMouseDownControlButton || (!fTracking && fHoverControl))
     {
         Torrent * torrent = [self representedObject];
+        //pelegrin addition
         if (torrent.isMovingError) {
             return NSLocalizedString(@"Moving again", "Torrent Table -> tooltip");
         }
+        //pelegrin addition end
         if ([torrent isActive])
             return NSLocalizedString(@"Pause the transfer", "Torrent Table -> tooltip");
         else
