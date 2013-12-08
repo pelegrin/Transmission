@@ -74,6 +74,7 @@
     [fTransferBandwidthSectionLabel sizeToFit];
     [fDownloadLimitCheck sizeToFit];
     [fUploadLimitCheck sizeToFit];
+        //    [destinationFolder sizeToFit];
     NSRect downloadLimitFieldFrame = [fDownloadLimitField frame];
     NSRect uploadLimitFieldFrame = [fUploadLimitField frame];
     const CGFloat speedLimitFieldX = MAX(NSMaxX([fDownloadLimitCheck frame]), NSMaxX([fUploadLimitCheck frame])) + padding;
@@ -171,7 +172,7 @@
                 downloadUseSpeedLimit = [torrent usesSpeedLimit: NO] ? NSOnState : NSOffState,
                 downloadSpeedLimit = [torrent speedLimit: NO],
                 globalUseSpeedLimit = [torrent usesGlobalSpeedLimit] ? NSOnState : NSOffState;
-    
+    [destinationFolder setStringValue:torrent.downloadFolder];
     while ((torrent = [enumerator nextObject])
             && (uploadUseSpeedLimit != NSMixedState || uploadSpeedLimit != INVALID
                 || downloadUseSpeedLimit != NSMixedState || downloadSpeedLimit != INVALID
@@ -199,6 +200,7 @@
     
     [fUploadLimitLabel setEnabled: uploadUseSpeedLimit == NSOnState];
     [fUploadLimitField setEnabled: uploadUseSpeedLimit == NSOnState];
+    [destinationButton setEnabled:YES];
     if (uploadSpeedLimit != INVALID)
         [fUploadLimitField setIntValue: uploadSpeedLimit];
     else
@@ -551,6 +553,29 @@
     return NO;
 }
 
+- (IBAction)setNewDestinationFolder:(id)sender
+{
+    NSOpenPanel* panel = [NSOpenPanel openPanel];
+    [panel setCanChooseDirectories:YES];
+    [panel setMessage:NSLocalizedString(@"Choose a new destination directory", @"InfoOptions -> panel -> title")];
+    [panel beginWithCompletionHandler:^(NSInteger result){
+        if (result == NSFileHandlingPanelOKButton) {
+            /*
+            NSURL*  newFolder = [panel directoryURL];
+            [destinationFolder setStringValue:[newFolder absoluteString]];
+            NSLog(@"new folder:%@",[newFolder absoluteString]);
+             */
+            NSString *newFolder = [panel directory];
+            for (Torrent *torrent in fTorrents) {
+                if (!torrent.isMoving)
+                    torrent.downloadFolder = newFolder;
+            }
+        }
+        
+    }];
+}
+
+
 @end
 
 @implementation InfoOptionsViewController (Private)
@@ -596,6 +621,9 @@
         [fPeersConnectField setEnabled: NO];
         [fPeersConnectField setStringValue: @""];
         [fPeersConnectLabel setEnabled: NO];
+    
+        [destinationFolder setStringValue:@""];
+        [destinationButton setEnabled:NO];
     }
     else
         [self updateOptions];
@@ -626,5 +654,6 @@
     if ([notification object] != self)
         [self updateOptions];
 }
+
 
 @end

@@ -376,7 +376,7 @@
         [icon drawInRect: iconRect fromRect: NSZeroRect operation: NSCompositeSourceOver fraction: 1.0 respectFlipped: YES hints: nil];
     }
     
-    //error badge
+    //error badge or moving error /pelegrin addition
     if ((error && !minimal) || movingError)
     {
         NSImage * errorImage = [NSImage imageNamed: NSImageNameCaution];

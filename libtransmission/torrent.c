@@ -1753,7 +1753,9 @@ stopTorrent (void * vtor)
   assert (tr_isTorrent (tor));
 
   tr_torrentLock (tor);
-
+    tor->isRunning = 0;
+    tor->isStopping = 0;
+    tr_torrentSetDirty (tor);
   tr_verifyRemove (tor);
   torrentSetQueued (tor, false);
   tr_peerMgrStopTorrent (tor);
@@ -1771,19 +1773,8 @@ stopTorrent (void * vtor)
 void
 tr_torrentStop (tr_torrent * tor)
 {
-    assert (tr_isTorrent (tor));
-
-    if (tr_isTorrent (tor))
-    {
-        tr_sessionLock (tor->session);
-
-        tor->isRunning = 0;
-        tor->isStopping = 0;
-        tr_torrentSetDirty (tor);
-        tr_runInEventThread (tor->session, stopTorrent, tor);
-
-        tr_sessionUnlock (tor->session);
-    }
+    assert(tr_isTorrent(tor));
+    tr_runInEventThread (tor->session, stopTorrent, tor);
 }
 
 static void
@@ -2049,7 +2040,7 @@ tr_torrentRecheckCompleteness (tr_torrent * tor)
 
             if (tor->currentDir == tor->incompleteDir) {
                 
-                /* pelgrin change
+                /* pelegrin change
                 tr_torrentSetLocation (tor, tor->downloadDir, true, NULL, NULL);
                 */
             }

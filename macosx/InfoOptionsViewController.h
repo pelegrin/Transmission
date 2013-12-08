@@ -42,6 +42,9 @@
     IBOutlet NSTextField * fTransferBandwidthSectionLabel, * fPrioritySectionLabel, * fPriorityLabel;
     IBOutlet NSTextField * fSeedingLimitsSectionLabel, * fRatioLabel, * fInactivityLabel;
     IBOutlet NSTextField * fAdvancedSectionLabel, * fMaxConnectionsLabel;
+        //Destination folder outlet -pelegrin addition    
+    IBOutlet NSTextField *destinationFolder;
+    IBOutlet NSButtonCell *destinationButton;
     
     NSString * fInitialString;
 }
@@ -49,7 +52,9 @@
 - (void) setInfoForTorrents: (NSArray *) torrents;
 - (void) updateInfo;
 - (void) updateOptions;
-
+    //pelegrin addition
+- (IBAction)setNewDestinationFolder:(id)sender;
+    //pelegrin addition end
 - (IBAction) setUseSpeedLimit: (id) sender;
 - (IBAction) setSpeedLimit: (id) sender;
 - (IBAction) setUseGlobalSpeedLimit: (id) sender;
